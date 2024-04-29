@@ -2,7 +2,7 @@ const express = require("express");
 const puppeteer = require("puppeteer");
 const dotenv = require("dotenv").config();
 const app = express();
-// const PORT = process.env.PORT
+const PORT = process.env.PORT;
 const NBC_WEBSITE = process.env.NBC_WEBSITE;
 const NSSF_WEBSITE = process.env.NSSF_WEBSITE;
 const GDT_WEBSITE = process.env.GDT_WEBSITE;
@@ -44,12 +44,12 @@ app.get("/exr-rate", (req, res) => {
       });
     });
 });
-// const PORT = process.env.PORT || 5010;
+//const PORT = process.env.PORT || 5010;
 // app.listen(PORT, () => {
 //   console.log(`Server running on http://localhost:${PORT}`);
 // });
 app.listen(PORT, function () {
-    console.log(`app listening on port ${PORT}!`);
+  console.log(`app listening on port ${PORT}!`);
 });
 
 async function scrapeNBC(date) {
