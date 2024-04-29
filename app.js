@@ -55,7 +55,7 @@ async function scrapeNBC(date) {
 
   // Navigate the page to a URL
   //   await page.goto(NBC_WEBSITE, { waitUntil: "domcontentloaded" });
-  await page.goto(NBC_WEBSITE);
+  await page.goto(NBC_WEBSITE, { waitUntil: "domcontentloaded" });
 
   await page.focus("#datepicker");
   await page.keyboard.down("Control");
@@ -84,7 +84,7 @@ async function scrapeNSSF() {
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
     // Navigate the page to a URL
-    await page.goto(NSSF_WEBSITE);
+    await page.goto(NSSF_WEBSITE, { waitUntil: "domcontentloaded" });
 
     let data = await page.evaluate(() => {
       let text = document.querySelector(
@@ -115,7 +115,7 @@ async function scrapeExchangeRate() {
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
     // Navigate the page to a URL
-    await page.goto(GDT_WEBSITE);
+    await page.goto(GDT_WEBSITE, { waitUntil: "networkidle0" });
 
     let data = await page.evaluate(() => {
       let rows = Array.from(document.querySelectorAll("#data-container tr"));
