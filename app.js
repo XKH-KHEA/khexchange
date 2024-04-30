@@ -2,10 +2,10 @@ const express = require("express");
 const puppeteer = require("puppeteer");
 const dotenv = require("dotenv").config();
 const app = express();
-const PORT = process.env.PORT;
-const NBC_WEBSITE = process.env.NBC_WEBSITE;
-const NSSF_WEBSITE = process.env.NSSF_WEBSITE;
-const GDT_WEBSITE = process.env.GDT_WEBSITE;
+
+// const NBC_WEBSITE = process.env.NBC_WEBSITE;
+// const NSSF_WEBSITE = process.env.NSSF_WEBSITE;
+// const GDT_WEBSITE = process.env.GDT_WEBSITE;
 
 app.get("/nbc-exr-rate", (req, res) => {
   const date = req.query.date ?? "";
@@ -44,6 +44,7 @@ app.get("/exr-rate", (req, res) => {
       });
     });
 });
+const PORT = process.env.PORT ||3000;
 app.listen(PORT, function () {
   console.log(`app listening on port ${PORT}!`);
 });
@@ -55,7 +56,7 @@ async function scrapeNBC(date) {
 
   // Navigate the page to a URL
   //   await page.goto(NBC_WEBSITE, { waitUntil: "domcontentloaded" });
-  await page.goto(NBC_WEBSITE, { waitUntil: "domcontentloaded" });
+  await page.goto("https://www.nbc.gov.kh/english/economic_research/exchange_rate.php", { waitUntil: "domcontentloaded" });
 
   await page.focus("#datepicker");
   await page.keyboard.down("Control");
@@ -84,7 +85,7 @@ async function scrapeNSSF() {
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
     // Navigate the page to a URL
-    await page.goto(NSSF_WEBSITE, { waitUntil: "domcontentloaded" });
+    await page.goto("https://www.nssf.gov.kh/language/en", { waitUntil: "domcontentloaded" });
 
     let data = await page.evaluate(() => {
       let text = document.querySelector(
@@ -115,7 +116,7 @@ async function scrapeExchangeRate() {
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
     // Navigate the page to a URL
-    await page.goto(GDT_WEBSITE, { waitUntil: "networkidle0" });
+    await page.goto("https://www.tax.gov.kh/en/exchange-rate", { waitUntil: "networkidle0" });
 
     let data = await page.evaluate(() => {
       let rows = Array.from(document.querySelectorAll("#data-container tr"));
