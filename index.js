@@ -139,7 +139,7 @@ app.get("/data", async (req, res) => {
     const browser = await puppeteer.launch({
       args: [...chromium.args],
       defaultViewport: chromium.defaultViewport,
-      //executablePath: await chromium.executablePath(), // Call the function to get the path
+      executablePath: await chromium.executablePath(), // Call the function to get the path
       headless: chromium.headless,
       ignoreHTTSErrors: true,
     });
