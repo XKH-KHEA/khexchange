@@ -2,28 +2,52 @@ const express = require("express");
 const puppeteer = require("puppeteer");
 const cheerio = require("cheerio");
 const cors = require("cors");
+const {
+  args,
+  defaultViewport,
+  executablePath,
+  headless,
+} = require("chrome-aws-lambda");
 require("dotenv").config();
 const app = express();
 app.use(cors());
-
+let chrome = {};
+let puppeteer;
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  chrome = require("chrome-aws-lambda");
+  puppeteer = require("puppeteer-core");
+} else {
+  puppeteer = require("puppeteer");
+}
 app.get("/data", async (req, res) => {
+  let options = {};
+  if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    options = {
+      args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+      defaultViewport: chrome.defaultViewport,
+      executablePath: await chrome.executablePath,
+      headless: true,
+      ignoreHTTSErrors: true,
+    };
+  }
   try {
     const today = new Date().toISOString().split("T")[0];
     const dateFilter = req.query.date || today;
 
-    const browser = await puppeteer.launch({
-      headless: "new",
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--single-process",
-        "--no-zygote",
-      ],
-      executablePath:
-        process.env.NODE_ENV === "production"
-          ? process.env.PUPEPTEER_EXECUTTABLE_PATH
-          : puppeteer.executablePath(),
-    });
+    const browser = await puppeteer.launch(options);
+    // {
+    //   headless: true,
+    //   args: [
+    //     "--no-sandbox",
+    //     "--disable-setuid-sandbox",
+    //     "--single-process",
+    //     "--no-zygote",
+    //   ],
+    //   executablePath:
+    //     process.env.NODE_ENV === "production"
+    //       ? process.env.PUPEPTEER_EXECUTTABLE_PATH
+    //       : puppeteer.executablePath(),
+    // });
 
     const page = await browser.newPage();
 
