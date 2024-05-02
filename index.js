@@ -1,13 +1,6 @@
 const express = require("express");
-const puppeteer = require("puppeteer");
 const cheerio = require("cheerio");
 const cors = require("cors");
-const {
-  args,
-  defaultViewport,
-  executablePath,
-  headless,
-} = require("chrome-aws-lambda");
 require("dotenv").config();
 const app = express();
 app.use(cors());
