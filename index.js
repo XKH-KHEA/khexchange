@@ -7,9 +7,10 @@ app.use(cors());
 let chrome = {};
 let puppeteer;
 if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-  chrome = require("chrome-aws-lambda");
-  puppeteer = require("puppeteer-core");
+  chrome = require("@sparticuz/chromium");
+  puppeteer = require("puppeteer");
 } else {
+  chrome = require("@sparticuz/chromium");
   puppeteer = require("puppeteer");
 }
 app.get("/data", async (req, res) => {
