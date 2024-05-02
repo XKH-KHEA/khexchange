@@ -1,17 +1,24 @@
 const express = require("express");
 const cheerio = require("cheerio");
 const cors = require("cors");
+const chromium = require("@sparticuz/chromium");
+const puppeteer = require("puppeteer-core");
 require("dotenv").config();
 const app = express();
+
+
 app.use(cors());
-let chrome = {};
-let puppeteer;
-if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-  chrome = require("chrome-aws-lambda");
-  puppeteer = require("puppeteer-core");
-} else {
-  puppeteer = require("puppeteer");
-}
+
+
+
+// let chrome = {};
+// let puppeteer;
+// if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+//   chrome = require("chrome-aws-lambda");
+//   puppeteer = require("puppeteer-core");
+// } else {
+//   puppeteer = require("puppeteer");
+// }
 app.get("/data", async (req, res) => {
   let options = {};
   if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
@@ -26,8 +33,14 @@ app.get("/data", async (req, res) => {
   try {
     const today = new Date().toISOString().split("T")[0];
     const dateFilter = req.query.date || today;
-
-    const browser = await puppeteer.launch(options);
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    });
+    // const browser = await puppeteer.launch(options);
     // {
     //   headless: true,
     //   args: [
