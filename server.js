@@ -6,7 +6,7 @@ require("dotenv").config();
 const app = express();
 app.use(cors());
 
-app.get("/data", async (req, res) => {
+app.get("/nbc-rate", async (req, res) => {
   try {
     const today = new Date().toISOString().split("T")[0];
     const dateFilter = req.query.date || today;
