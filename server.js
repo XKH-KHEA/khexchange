@@ -135,7 +135,7 @@ async function scrapeNSSF() {
       const browser = await puppeteer.launch({ headless: "new" });
       const page = await browser.newPage();
       // Navigate the page to a URL
-      await page.goto("https://www.nssf.gov.kh/language/en", { waitUntil: "domcontentloaded" });
+      await page.goto("https://www.nssf.gov.kh/language/en");
   
       let data = await page.evaluate(() => {
         let text = document.querySelector(
@@ -166,7 +166,7 @@ async function scrapeNSSF() {
       const browser = await puppeteer.launch({ headless: "new" });
       const page = await browser.newPage();
       // Navigate the page to a URL
-      await page.goto("https://www.tax.gov.kh/en/exchange-rate", { waitUntil: "networkidle0" });
+      await page.goto("https://www.tax.gov.kh/en/exchange-rate");
   
       let data = await page.evaluate(() => {
         let rows = Array.from(document.querySelectorAll("#data-container tr"));
